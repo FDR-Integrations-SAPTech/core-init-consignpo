@@ -44,6 +44,9 @@ sap.ui.define(['sap/ui/core/mvc/ControllerExtension'], function (ControllerExten
 
 			this._view.getModel("ActionModel").setProperty("/isButtonEnabled", enableCreatePO);
 
+		},
+		test: function() {
+			console.log("test");
 		}
 	});
 });

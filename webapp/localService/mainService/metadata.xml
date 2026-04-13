@@ -61,6 +61,8 @@
                 <Property Name="DocumentDate" Type="Edm.Date"/>
                 <Property Name="PostingDate" Type="Edm.Date"/>
                 <Property Name="CompanyCode" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="PurchaseDocument" Type="Edm.String" Nullable="false" MaxLength="10"/>
+                <Property Name="PurchaseDocumentItem" Type="Edm.String" Nullable="false" MaxLength="6"/>
                 <Property Name="IssgOrRcvgStkIdfgSpclStkType" Type="Edm.String" Nullable="false" MaxLength="1"/>
                 <Property Name="ConsignmentPipelineSupplier" Type="Edm.String" Nullable="false" MaxLength="10"/>
                 <Property Name="Plant" Type="Edm.String" Nullable="false" MaxLength="4"/>
@@ -69,16 +71,26 @@
                 <Property Name="SuplrCsgnmtPplineWthdrwlAmount" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="variable"/>
                 <Property Name="SupCsgnmtPplineWthdrwlQtyUnit" Type="Edm.String" Nullable="false" MaxLength="3"/>
                 <Property Name="SuplrCsgnmtPplineWthdrwlQty" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="3"/>
+                <Property Name="MaterialName" Type="Edm.String" Nullable="false" MaxLength="40"/>
+                <Property Name="SupplierName" Type="Edm.String" Nullable="false" MaxLength="80"/>
+                <Property Name="InforecordPrice" Type="Edm.Decimal" Nullable="false" Precision="11" Scale="variable"/>
+                <Property Name="InforecordUnitQty" Type="Edm.Decimal" Nullable="false" Precision="5"/>
+                <Property Name="InforecordUOM" Type="Edm.String" Nullable="false" MaxLength="3"/>
                 <Property Name="GLAccount" Type="Edm.String" Nullable="false" MaxLength="10"/>
                 <Property Name="TaxCode" Type="Edm.String" Nullable="false" MaxLength="2"/>
                 <Property Name="NonDeductibleInputTaxAmount" Type="Edm.Decimal" Nullable="false" Precision="13" Scale="variable"/>
                 <Property Name="ProfitCenter" Type="Edm.String" Nullable="false" MaxLength="10"/>
                 <Property Name="TaxCountry" Type="Edm.String" Nullable="false" MaxLength="3"/>
+                <Property Name="PurchaseOrg" Type="Edm.String" Nullable="false" MaxLength="4"/>
+                <Property Name="__EntityControl" Type="com.sap.gateway.srvd.zsrv_settleconsignpo.v0001.EntityControl"/>
                 <Property Name="__OperationControl" Type="com.sap.gateway.srvd.zsrv_settleconsignpo.v0001.SettleConsignmentPOOperationControl"/>
                 <Property Name="SAP__Messages" Type="Collection(com.sap.gateway.srvd.zsrv_settleconsignpo.v0001.SAP__Message)" Nullable="false"/>
             </EntityType>
             <ComplexType Name="SettleConsignmentPOOperationControl">
                 <Property Name="settle" Type="Edm.Boolean" Nullable="false"/>
+            </ComplexType>
+            <ComplexType Name="EntityControl">
+                <Property Name="Updatable" Type="Edm.Boolean" Nullable="false"/>
             </ComplexType>
             <ComplexType Name="SAP__Message">
                 <Property Name="code" Type="Edm.String" Nullable="false"/>
@@ -126,6 +138,18 @@
                 <Annotation Term="SAP__common.Label" String="Company Code"/>
                 <Annotation Term="SAP__common.Heading" String="CoCd"/>
             </Annotations>
+            <Annotations Target="SAP__self.SettleConsignmentPOType/PurchaseDocument">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Document Number"/>
+                <Annotation Term="SAP__common.Heading" String="DocumentNo"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Document Number of an Accounting Document"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettleConsignmentPOType/PurchaseDocumentItem">
+                <Annotation Term="SAP__common.IsDigitSequence"/>
+                <Annotation Term="SAP__common.Label" String="Invoice Item"/>
+                <Annotation Term="SAP__common.Heading" String="InvItem"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Document Item in Invoice Document"/>
+            </Annotations>
             <Annotations Target="SAP__self.SettleConsignmentPOType/IssgOrRcvgStkIdfgSpclStkType">
                 <Annotation Term="SAP__common.IsUpperCase"/>
                 <Annotation Term="SAP__common.Label" String="Special Stock"/>
@@ -133,6 +157,7 @@
                 <Annotation Term="SAP__common.QuickInfo" String="Special Stock Indicator"/>
             </Annotations>
             <Annotations Target="SAP__self.SettleConsignmentPOType/ConsignmentPipelineSupplier">
+                <Annotation Term="SAP__common.Text" Path="SupplierName"/>
                 <Annotation Term="SAP__common.IsUpperCase"/>
                 <Annotation Term="SAP__common.Label" String="Supplier"/>
                 <Annotation Term="SAP__common.QuickInfo" String="Supplier's Account Number"/>
@@ -143,6 +168,7 @@
                 <Annotation Term="SAP__common.Heading" String="Plnt"/>
             </Annotations>
             <Annotations Target="SAP__self.SettleConsignmentPOType/Material">
+                <Annotation Term="SAP__common.Text" Path="MaterialName"/>
                 <Annotation Term="SAP__common.IsUpperCase"/>
                 <Annotation Term="SAP__common.Label" String="Material"/>
                 <Annotation Term="SAP__common.QuickInfo" String="Material Number"/>
@@ -166,6 +192,17 @@
             <Annotations Target="SAP__self.SettleConsignmentPOType/SuplrCsgnmtPplineWthdrwlQty">
                 <Annotation Term="SAP__measures.Unit" Path="SupCsgnmtPplineWthdrwlQtyUnit"/>
                 <Annotation Term="SAP__common.Label" String="Quantity withdrawn for settlement"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettleConsignmentPOType/InforecordPrice">
+                <Annotation Term="SAP__measures.ISOCurrency" Path="DocumentCurrency"/>
+                <Annotation Term="SAP__common.Label" String="Net Price"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Net Price in Purchasing Info Record"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettleConsignmentPOType/InforecordUOM">
+                <Annotation Term="SAP__common.IsUnit"/>
+                <Annotation Term="SAP__common.Label" String="Order Price Unit"/>
+                <Annotation Term="SAP__common.Heading" String="OPU"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Order Price Unit (Purchasing)"/>
             </Annotations>
             <Annotations Target="SAP__self.SettleConsignmentPOType/GLAccount">
                 <Annotation Term="SAP__common.IsUpperCase"/>
@@ -195,6 +232,17 @@
                 <Annotation Term="SAP__common.Heading" String="Tax Country/Region"/>
                 <Annotation Term="SAP__common.QuickInfo" String="Tax Reporting Country/Region"/>
             </Annotations>
+            <Annotations Target="SAP__self.SettleConsignmentPOType/PurchaseOrg">
+                <Annotation Term="SAP__common.IsUpperCase"/>
+                <Annotation Term="SAP__common.Label" String="Purch. Organization"/>
+                <Annotation Term="SAP__common.Heading" String="POrg"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Purchasing Organization"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettleConsignmentPOType/__EntityControl">
+                <Annotation Term="SAP__core.Computed"/>
+                <Annotation Term="SAP__UI.HiddenFilter"/>
+                <Annotation Term="SAP__UI.Hidden"/>
+            </Annotations>
             <Annotations Target="SAP__self.SettleConsignmentPOType/__OperationControl">
                 <Annotation Term="SAP__core.Computed"/>
                 <Annotation Term="SAP__UI.HiddenFilter"/>
@@ -218,8 +266,7 @@
                         <Record Type="SAP__UI.DataFieldForAction">
                             <PropertyValue Property="Label" String="Settle"/>
                             <PropertyValue Property="Action" String="com.sap.gateway.srvd.zsrv_settleconsignpo.v0001.settle(com.sap.gateway.srvd.zsrv_settleconsignpo.v0001.SettleConsignmentPOType)"/>
-                            <PropertyValue Property="InvocationGrouping" EnumMember="SAP__UI.OperationGroupingType/ChangeSet"/>
-                            <Annotation Term="SAP__UI.Importance" EnumMember="SAP__UI.ImportanceType/High"/>
+                            <PropertyValue Property="InvocationGrouping" EnumMember="SAP__UI.OperationGroupingType/Isolated"/>
                         </Record>
                         <Record Type="SAP__UI.DataField">
                             <PropertyValue Property="Value" Path="SuplrCsgnmtPplineWthdrwlStatus"/>
@@ -234,49 +281,49 @@
                             <Annotation Term="SAP__UI.Importance" EnumMember="SAP__UI.ImportanceType/High"/>
                         </Record>
                         <Record Type="SAP__UI.DataField">
-                            <PropertyValue Property="Value" Path="SuplrCsgnmtPplineWthdrwlQty"/>
+                            <PropertyValue Property="Value" Path="CompanyCode"/>
                             <Annotation Term="SAP__UI.Importance" EnumMember="SAP__UI.ImportanceType/High"/>
                         </Record>
                         <Record Type="SAP__UI.DataField">
-                            <PropertyValue Property="Value" Path="SupCsgnmtPplineWthdrwlQtyUnit"/>
-                            <Annotation Term="SAP__UI.Importance" EnumMember="SAP__UI.ImportanceType/High"/>
-                            <Annotation Term="SAP__HTML5.CssDefaults">
-                                <Record>
-                                    <PropertyValue Property="width" String="15rem"/>
-                                </Record>
-                            </Annotation>
+                            <PropertyValue Property="Label" String="Document Number"/>
+                            <PropertyValue Property="Value" Path="PurchaseDocument"/>
+                            <Annotation Term="SAP__UI.Importance" EnumMember="SAP__UI.ImportanceType/Medium"/>
                         </Record>
                         <Record Type="SAP__UI.DataField">
-                            <PropertyValue Property="Value" Path="SuplrCsgnmtPplineWthdrwlAmount"/>
-                            <Annotation Term="SAP__UI.Importance" EnumMember="SAP__UI.ImportanceType/High"/>
-                            <Annotation Term="SAP__HTML5.CssDefaults">
-                                <Record>
-                                    <PropertyValue Property="width" String="15rem"/>
-                                </Record>
-                            </Annotation>
+                            <PropertyValue Property="Label" String="Document Item"/>
+                            <PropertyValue Property="Value" Path="PurchaseDocumentItem"/>
+                            <Annotation Term="SAP__UI.Importance" EnumMember="SAP__UI.ImportanceType/Medium"/>
                         </Record>
                         <Record Type="SAP__UI.DataField">
-                            <PropertyValue Property="Value" Path="DocumentCurrency"/>
-                            <Annotation Term="SAP__UI.Importance" EnumMember="SAP__UI.ImportanceType/High"/>
-                        </Record>
-                        <Record Type="SAP__UI.DataField">
-                            <PropertyValue Property="Value" Path="Material"/>
-                            <Annotation Term="SAP__UI.Importance" EnumMember="SAP__UI.ImportanceType/High"/>
-                        </Record>
-                        <Record Type="SAP__UI.DataField">
-                            <PropertyValue Property="Value" Path="Plant"/>
-                            <Annotation Term="SAP__UI.Importance" EnumMember="SAP__UI.ImportanceType/High"/>
+                            <PropertyValue Property="Value" Path="IssgOrRcvgStkIdfgSpclStkType"/>
+                            <Annotation Term="SAP__UI.Importance" EnumMember="SAP__UI.ImportanceType/Medium"/>
                         </Record>
                         <Record Type="SAP__UI.DataField">
                             <PropertyValue Property="Value" Path="ConsignmentPipelineSupplier"/>
                             <Annotation Term="SAP__UI.Importance" EnumMember="SAP__UI.ImportanceType/High"/>
                         </Record>
                         <Record Type="SAP__UI.DataField">
-                            <PropertyValue Property="Value" Path="IssgOrRcvgStkIdfgSpclStkType"/>
+                            <PropertyValue Property="Value" Path="Plant"/>
+                            <Annotation Term="SAP__UI.Importance" EnumMember="SAP__UI.ImportanceType/Medium"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="Material"/>
                             <Annotation Term="SAP__UI.Importance" EnumMember="SAP__UI.ImportanceType/High"/>
                         </Record>
                         <Record Type="SAP__UI.DataField">
-                            <PropertyValue Property="Value" Path="CompanyCode"/>
+                            <PropertyValue Property="Value" Path="DocumentCurrency"/>
+                            <Annotation Term="SAP__UI.Importance" EnumMember="SAP__UI.ImportanceType/Medium"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="SuplrCsgnmtPplineWthdrwlAmount"/>
+                            <Annotation Term="SAP__UI.Importance" EnumMember="SAP__UI.ImportanceType/High"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="SupCsgnmtPplineWthdrwlQtyUnit"/>
+                            <Annotation Term="SAP__UI.Importance" EnumMember="SAP__UI.ImportanceType/Medium"/>
+                        </Record>
+                        <Record Type="SAP__UI.DataField">
+                            <PropertyValue Property="Value" Path="SuplrCsgnmtPplineWthdrwlQty"/>
                             <Annotation Term="SAP__UI.Importance" EnumMember="SAP__UI.ImportanceType/High"/>
                         </Record>
                     </Collection>
@@ -288,15 +335,9 @@
                         <PropertyPath>SuplrCsgnmtPplineWthdrwlStatus</PropertyPath>
                         <PropertyPath>DocumentDate</PropertyPath>
                         <PropertyPath>PostingDate</PropertyPath>
-                        <PropertyPath>SuplrCsgnmtPplineWthdrwlQty</PropertyPath>
-                        <PropertyPath>SupCsgnmtPplineWthdrwlQtyUnit</PropertyPath>
-                        <PropertyPath>SuplrCsgnmtPplineWthdrwlAmount</PropertyPath>
-                        <PropertyPath>DocumentCurrency</PropertyPath>
-                        <PropertyPath>Material</PropertyPath>
-                        <PropertyPath>Plant</PropertyPath>
-                        <PropertyPath>ConsignmentPipelineSupplier</PropertyPath>
-                        <PropertyPath>IssgOrRcvgStkIdfgSpclStkType</PropertyPath>
                         <PropertyPath>CompanyCode</PropertyPath>
+                        <PropertyPath>ConsignmentPipelineSupplier</PropertyPath>
+                        <PropertyPath>Material</PropertyPath>
                     </Collection>
                 </Annotation>
                 <Annotation Term="SAP__common.Messages" Path="SAP__Messages"/>
@@ -311,6 +352,7 @@
                     <Record>
                         <PropertyValue Property="NonFilterableProperties">
                             <Collection>
+                                <PropertyPath>__EntityControl</PropertyPath>
                                 <PropertyPath>__OperationControl</PropertyPath>
                             </Collection>
                         </PropertyValue>
@@ -320,6 +362,7 @@
                     <Record>
                         <PropertyValue Property="NonSortableProperties">
                             <Collection>
+                                <PropertyPath>__EntityControl</PropertyPath>
                                 <PropertyPath>__OperationControl</PropertyPath>
                             </Collection>
                         </PropertyValue>
@@ -337,7 +380,7 @@
                 </Annotation>
                 <Annotation Term="SAP__capabilities.UpdateRestrictions">
                     <Record>
-                        <PropertyValue Property="Updatable" Bool="false"/>
+                        <PropertyValue Property="Updatable" Path="__EntityControl/Updatable"/>
                         <PropertyValue Property="QueryOptions">
                             <Record>
                                 <PropertyValue Property="SelectSupported" Bool="true"/>
@@ -419,6 +462,15 @@
                 <Annotation Term="SAP__capabilities.KeyAsSegmentSupported"/>
                 <Annotation Term="SAP__capabilities.AsynchronousRequestsSupported"/>
             </Annotations>
+            <Annotations Target="SAP__self.SettleConsignmentPOType/MaterialName">
+                <Annotation Term="SAP__UI.Hidden"/>
+                <Annotation Term="SAP__common.Label" String="Material Description"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettleConsignmentPOType/SupplierName">
+                <Annotation Term="SAP__UI.Hidden"/>
+                <Annotation Term="SAP__common.Label" String="Name of Supplier"/>
+                <Annotation Term="SAP__common.Heading" String="Supplier"/>
+            </Annotations>
             <Annotations Target="SAP__self.SettleConsignmentPOType/DocumentDate">
                 <Annotation Term="SAP__common.Label" String="Document Date"/>
                 <Annotation Term="SAP__common.Heading" String="Doc. Date"/>
@@ -429,6 +481,15 @@
                 <Annotation Term="SAP__common.Heading" String="Pstng Date"/>
                 <Annotation Term="SAP__common.QuickInfo" String="Posting Date in the Document"/>
             </Annotations>
+            <Annotations Target="SAP__self.SettleConsignmentPOType/InforecordUnitQty">
+                <Annotation Term="SAP__common.Label" String="Price Unit"/>
+                <Annotation Term="SAP__common.Heading" String="Per"/>
+            </Annotations>
+            <Annotations Target="SAP__self.SettleConsignmentPOType/__EntityControl/Updatable">
+                <Annotation Term="SAP__common.Label" String="Dyn. Method Control"/>
+                <Annotation Term="SAP__common.Heading" String="Dynamic Method Control"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Dynamic Method Property"/>
+            </Annotations>
             <Annotations Target="SAP__self.SettleConsignmentPOType/__OperationControl/settle">
                 <Annotation Term="SAP__common.Label" String="Dyn. Action Control"/>
                 <Annotation Term="SAP__common.Heading" String="Dynamic Action Control"/>
@@ -438,6 +499,11 @@
                 <Annotation Term="SAP__common.Label" String="Dyn. Action Control"/>
                 <Annotation Term="SAP__common.Heading" String="Dynamic Action Control"/>
                 <Annotation Term="SAP__common.QuickInfo" String="Dynamic Action Property"/>
+            </Annotations>
+            <Annotations Target="SAP__self.EntityControl/Updatable">
+                <Annotation Term="SAP__common.Label" String="Dyn. Method Control"/>
+                <Annotation Term="SAP__common.Heading" String="Dynamic Method Control"/>
+                <Annotation Term="SAP__common.QuickInfo" String="Dynamic Method Property"/>
             </Annotations>
         </Schema>
     </edmx:DataServices>

@@ -33,6 +33,7 @@ server:
         backend:
           - path: /sap
             url: http://virtualds4:44300
+            client: '050'
             destination: virtualds4
     - name: sap-fe-mockserver
       beforeMiddleware: csp

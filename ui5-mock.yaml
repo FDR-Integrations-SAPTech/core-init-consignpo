@@ -18,6 +18,7 @@ server:
         backend:
           - path: /sap
             url: http://virtualds4:44300
+            client: '050'
             destination: virtualds4
     - name: fiori-tools-appreload
       afterMiddleware: compression
